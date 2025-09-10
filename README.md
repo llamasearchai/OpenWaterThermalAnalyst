@@ -2,7 +2,7 @@
 
 OpenWaterThermalAnalyst is a comprehensive OpenAI Agents SDK integrated program that combines thermal infrared remote sensing, hydrodynamic plume modeling, regulatory compliance checking, machine learning prediction, and real-time alerting to analyze and manage thermal impacts in open water systems.
 
-## 🌊 Features
+## Features
 
 ### Core Functionality
 - **Thermal Imagery Processing**: Landsat 8/9 TIRS, MODIS, ECOSTRESS via rasterio/GDAL
@@ -32,7 +32,7 @@ OpenWaterThermalAnalyst is a comprehensive OpenAI Agents SDK integrated program 
 - **Datasette Integration**: SQLite-based data exploration
 - **Comprehensive Testing**: 100% test coverage with automated testing
 
-## 🚀 Installation
+## Installation
 
 ### Requirements
 - Python >= 3.9
@@ -58,7 +58,7 @@ docker build -f Dockerfile.prod -t openwater-thermal-analyst .
 docker run -p 8000:8000 openwater-thermal-analyst
 ```
 
-## 📖 Quick Start
+## Quick Start
 
 ### 1. Thermal Imagery Processing
 ```bash
@@ -95,7 +95,7 @@ openwater model-plume 200 300 \
   --output plume_simulation.npy
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### YAML Configuration File
 Create a config file (see `config/example.yaml`):
@@ -116,7 +116,7 @@ export ALERT_WEBHOOK_URL="https://your-webhook.com/alerts"
 export SCADA_ENDPOINT="https://your-scada.com/api"
 ```
 
-## 🌐 API Usage
+## API Usage
 
 ### Start the API Server
 ```bash
@@ -148,7 +148,7 @@ with open('thermal.tif', 'rb') as f:
     )
 ```
 
-## 🧪 Testing
+## Testing
 
 ### Run All Tests
 ```bash
@@ -170,7 +170,7 @@ openwater model-plume 10 10 --u 0.1 --v 0.0 --output test.npy
 curl http://localhost:8000/health
 ```
 
-## 🐳 Docker & Deployment
+## Docker & Deployment
 
 ### Development Environment
 ```bash
@@ -195,7 +195,7 @@ docker run -p 8000:8000 \
   openwater-prod
 ```
 
-## 🤖 OpenAI Agents SDK Workflows
+## OpenAI Agents SDK Workflows
 
 The system includes specialized AI agents for comprehensive analysis:
 
@@ -219,7 +219,7 @@ result = run_agents_workflow_sync(
 print(result)
 ```
 
-## 📊 Machine Learning
+## Machine Learning
 
 ### Train Random Forest Model
 ```python
@@ -243,7 +243,7 @@ result = train_lstm_regressor(
 )
 ```
 
-## 📈 Reporting & Visualization
+## Reporting & Visualization
 
 ### Generate Compliance Reports
 ```python
@@ -261,7 +261,7 @@ openwater check-compliance temp.tif --export-sqlite results.db
 datasette results.db
 ```
 
-## 🔧 Development
+## Development
 
 ### Project Structure
 ```
@@ -286,15 +286,15 @@ src/open_water_thermal_analyst/
 4. Ensure all tests pass
 5. Submit a pull request
 
-## 📄 License
+## License
 
 MIT License - see LICENSE file for details
 
-## 👥 Authors
+## Authors
 
 - **Nik Jois** - *Initial work* - [nikjois@llamasearch.ai](mailto:nikjois@llamasearch.ai)
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - OpenAI for the Agents SDK
 - NASA for thermal remote sensing data
