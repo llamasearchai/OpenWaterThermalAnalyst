@@ -1,0 +1,41 @@
+# macOS
+.DS_Store
+
+# Environments
+.env
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+*.pyo
+*.egg-info/
+.eggs/
+*.egg
+build/
+dist/
+.coverage
+.coverage.*
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Data and temp
+/tmp/
+/data/
+outputs/
+
+# OS/Files
+Thumbs.db
+

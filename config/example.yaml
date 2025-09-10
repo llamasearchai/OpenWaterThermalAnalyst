@@ -1,0 +1,11 @@
+# Example configuration for OpenWaterThermalAnalyst
+
+thresholds:
+  warning_celsius: 28.0
+  critical_celsius: 32.0
+  rolling_minutes: 60
+
+# Optional integrations (use environment variables if preferred)
+alert_webhook_url: ${ALERT_WEBHOOK_URL}
+scada_endpoint: ${SCADA_ENDPOINT}
+
