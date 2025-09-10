@@ -292,7 +292,7 @@ MIT License - see LICENSE file for details
 
 ## Authors
 
-- **Nik Jois** - *Initial work* - [nikjois@llamasearch.ai](mailto:nikjois@llamasearch.ai)
+- **Nik Jois** - *Initial work*
 
 ## Acknowledgments
 

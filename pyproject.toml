@@ -8,7 +8,7 @@ version = "1.0.0"
 description = "Integrates thermal infrared remote sensing, hydrodynamic modeling, compliance monitoring, ML prediction, and alerting for water thermal plume analysis"
 readme = "README.md"
 requires-python = ">=3.9"
-authors = [{ name = "Nik Jois", email = "nikjois@llamasearch.ai" }]
+authors = [{ name = "Nik Jois" }]
 license = { text = "MIT" }
 keywords = ["thermal", "remote sensing", "hydrodynamics", "water quality", "compliance", "plume", "Landsat", "MODIS", "ECOSTRESS"]
 classifiers = [
