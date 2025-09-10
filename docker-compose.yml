@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  openwater-thermal-analyst:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: openwater-thermal-analyst
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data:ro
+      - ./output:/app/output
+      - ./logs:/app/logs
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ALERT_WEBHOOK_URL=${ALERT_WEBHOOK_URL}
+      - SCADA_ENDPOINT=${SCADA_ENDPOINT}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - openwater-network
+
+  # Optional Datasette service for data exploration
+  datasette:
+    image: datasette/datasette:latest
+    container_name: openwater-datasette
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./output:/app/data
+    command: ["datasette", "-h", "0.0.0.0", "-p", "8001", "/app/data"]
+    depends_on:
+      - openwater-thermal-analyst
+    networks:
+      - openwater-network
+    profiles:
+      - optional
+
+  # Optional Jupyter notebook service for interactive analysis
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile.jupyter
+    container_name: openwater-jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/app/notebooks
+      - ./data:/app/data:ro
+      - ./output:/app/output
+    environment:
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN:-openwater}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - openwater-thermal-analyst
+    networks:
+      - openwater-network
+    profiles:
+      - optional
+
+networks:
+  openwater-network:
+    driver: bridge
+
+volumes:
+  openwater-data:
+    driver: local
+  openwater-output:
+    driver: local

@@ -1,0 +1,67 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.pytest_cache
+.coverage
+.tox
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.venv
+venv/
+ENV/
+env/
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+!README.md
+
+# Temporary files
+*.tmp
+*.temp
+
+# Test data (if any)
+tests/test_data/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Node modules (if any)
+node_modules/
+
+# Jupyter notebooks (will be mounted as volume)
+*.ipynb
+
+# Data files (will be mounted as volume)
+data/
+*.tif
+*.tiff
+*.npy
+*.csv
