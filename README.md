@@ -1,5 +1,7 @@
 # OpenWaterThermalAnalyst
 
+![OpenWaterThermalAnalyst](OpenWaterThermalAnalyst.png)
+
 OpenWaterThermalAnalyst is a comprehensive OpenAI Agents SDK integrated program that combines thermal infrared remote sensing, hydrodynamic plume modeling, regulatory compliance checking, machine learning prediction, and real-time alerting to analyze and manage thermal impacts in open water systems.
 
 ## Features
