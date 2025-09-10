@@ -14,6 +14,7 @@ from .hydrodynamics.plume_model import simulate_plume
 from .reports.npdes_report import generate_markdown_report
 from .ai import summarize_compliance_results
 from .datasette_export import export_compliance_results
+# from .agents import run_agents_workflow_sync  # Temporarily disabled due to schema issues
 
 
 def cmd_process_imagery(args: argparse.Namespace) -> None:
@@ -94,6 +95,85 @@ def cmd_check_compliance(args: argparse.Namespace) -> None:
         print(json.dumps({k: (v.tolist() if hasattr(v, "tolist") else v) for k, v in results.items() if not k.endswith("_mask")}, indent=2))
 
 
+# Temporarily disabled due to schema compatibility issues
+# def cmd_agents_comprehensive(args: argparse.Namespace) -> None:
+#     """Run comprehensive thermal analysis using multi-agent system."""
+#     try:
+#         result = run_agents_workflow_sync(
+#             "comprehensive_analysis",
+#             thermal_raster_path=args.input,
+#             output_dir=args.output_dir,
+#             warning_threshold=args.warning if args.warning else 28.0,
+#             critical_threshold=args.critical if args.critical else 32.0
+#         )
+#
+#         print("=== OpenAI Agents Comprehensive Analysis Complete ===")
+#         print(json.dumps(result, indent=2))
+#
+#         if args.output:
+#             with open(args.output, "w", encoding="utf-8") as f:
+#                 json.dump(result, f, indent=2)
+#             print(f"Results saved to: {args.output}")
+#
+#     except Exception as e:
+#         print(json.dumps({"error": str(e), "workflow": "comprehensive_analysis"}))
+#         sys.exit(1)
+#
+#
+# def cmd_agents_plume_workflow(args: argparse.Namespace) -> None:
+#     """Run plume simulation workflow using agents."""
+#     try:
+#         result = run_agents_workflow_sync(
+#             "plume_simulation",
+#             ny=args.ny,
+#             nx=args.nx,
+#             u=args.u,
+#             v=args.v,
+#             kappa=args.kappa,
+#             dx=args.dx,
+#             dy=args.dy,
+#             dt=args.dt,
+#             steps=args.steps,
+#             init_hotspot=args.init_hotspot,
+#             source=args.source
+#         )
+#
+#         print("=== OpenAI Agents Plume Simulation Workflow Complete ===")
+#         print(json.dumps(result, indent=2))
+#
+#         if args.output:
+#             with open(args.output, "w", encoding="utf-8") as f:
+#                 json.dump(result, f, indent=2)
+#             print(f"Results saved to: {args.output}")
+#
+#     except Exception as e:
+#         print(json.dumps({"error": str(e), "workflow": "plume_simulation"}))
+#         sys.exit(1)
+#
+#
+# def cmd_agents_ml_workflow(args: argparse.Namespace) -> None:
+#     """Run ML training workflow using agents."""
+#     try:
+#         result = run_agents_workflow_sync(
+#             "ml_training",
+#             training_data_path=args.csv_path,
+#             target_column=args.target,
+#             output_dir=args.output_dir
+#         )
+#
+#         print("=== OpenAI Agents ML Training Workflow Complete ===")
+#         print(json.dumps(result, indent=2))
+#
+#         if args.output:
+#             with open(args.output, "w", encoding="utf-8") as f:
+#                 json.dump(result, f, indent=2)
+#             print(f"Results saved to: {args.output}")
+#
+#     except Exception as e:
+#         print(json.dumps({"error": str(e), "workflow": "ml_training"}))
+#         sys.exit(1)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="openwater",
@@ -144,6 +224,41 @@ def main() -> None:
     p_comp.add_argument("--explain-to", dest="explain_to", default=None, help="Optional path to save/append AI explanation. If --report-md is set and this is omitted, the explanation is appended to the report.")
     p_comp.add_argument("--export-sqlite", dest="export_sqlite", default=None, help="Optional SQLite DB path to store results for exploration with Datasette.")
     p_comp.set_defaults(func=cmd_check_compliance)
+
+    # Temporarily disabled due to schema compatibility issues
+    # # agents comprehensive-analysis
+    # p_agents_comp = subparsers.add_parser("agents-comprehensive", help="Run comprehensive thermal analysis using OpenAI Agents SDK")
+    # p_agents_comp.add_argument("input", help="Input temperature raster")
+    # p_agents_comp.add_argument("--warning", type=float, default=None, help="Warning threshold (°C)")
+    # p_agents_comp.add_argument("--critical", type=float, default=None, help="Critical threshold (°C)")
+    # p_agents_comp.add_argument("--output-dir", default="agents_analysis_output", help="Output directory for results")
+    # p_agents_comp.add_argument("-o", "--output", default=None, help="Optional JSON output path")
+    # p_agents_comp.set_defaults(func=cmd_agents_comprehensive)
+    #
+    # # agents plume-workflow
+    # p_agents_plume = subparsers.add_parser("agents-plume", help="Run plume simulation workflow using OpenAI Agents SDK")
+    # p_agents_plume.add_argument("ny", type=int, help="Grid height")
+    # p_agents_plume.add_argument("nx", type=int, help="Grid width")
+    # p_agents_plume.add_argument("--u", type=float, required=True, help="Flow velocity u (m/s)")
+    # p_agents_plume.add_argument("--v", type=float, required=True, help="Flow velocity v (m/s)")
+    # p_agents_plume.add_argument("--kappa", type=float, default=1e-4, help="Thermal diffusivity (m²/s)")
+    # p_agents_plume.add_argument("--dx", type=float, default=10.0, help="Grid spacing x (m)")
+    # p_agents_plume.add_argument("--dy", type=float, default=10.0, help="Grid spacing y (m)")
+    # p_agents_plume.add_argument("--dt", type=float, default=1.0, help="Time step (s)")
+    # p_agents_plume.add_argument("--steps", type=int, default=100, help="Number of simulation steps")
+    # p_agents_plume.add_argument("--init-hotspot", nargs=3, type=float, metavar=("IY","IX","dT"), help="Initial hotspot [iy, ix, dT]")
+    # p_agents_plume.add_argument("--source", nargs=3, type=float, metavar=("IY","IX","S"), help="Continuous source [iy, ix, S]")
+    # p_agents_plume.add_argument("--output-dir", default="agents_plume_output", help="Output directory for results")
+    # p_agents_plume.add_argument("-o", "--output", default=None, help="Optional JSON output path")
+    # p_agents_plume.set_defaults(func=cmd_agents_plume_workflow)
+    #
+    # # agents ml-workflow
+    # p_agents_ml = subparsers.add_parser("agents-ml", help="Run ML training workflow using OpenAI Agents SDK")
+    # p_agents_ml.add_argument("csv_path", help="Path to training CSV file")
+    # p_agents_ml.add_argument("target", help="Target column name for prediction")
+    # p_agents_ml.add_argument("--output-dir", default="agents_ml_output", help="Output directory for results")
+    # p_agents_ml.add_argument("-o", "--output", default=None, help="Optional JSON output path")
+    # p_agents_ml.set_defaults(func=cmd_agents_ml_workflow)
 
     args = parser.parse_args()
     if not getattr(args, "command", None):
