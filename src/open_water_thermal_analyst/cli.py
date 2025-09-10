@@ -1,6 +1,7 @@
 import argparse
 import json
 from pathlib import Path
+import sys
 
 import numpy as np
 
@@ -11,6 +12,8 @@ from .compliance import evaluate_compliance
 from .alerts import send_alert
 from .hydrodynamics.plume_model import simulate_plume
 from .reports.npdes_report import generate_markdown_report
+from .ai import summarize_compliance_results
+from .datasette_export import export_compliance_results
 
 
 def cmd_process_imagery(args: argparse.Namespace) -> None:
@@ -61,6 +64,29 @@ def cmd_check_compliance(args: argparse.Namespace) -> None:
     if args.report_md:
         generate_markdown_report(results, args.report_md)
 
+    # Optional AI explanation
+    if getattr(args, "explain", False):
+        try:
+            explanation = summarize_compliance_results(results)
+            if args.explain_to:
+                with open(args.explain_to, "w", encoding="utf-8") as f:
+                    f.write(explanation + "\n")
+            elif args.report_md:
+                with open(args.report_md, "a", encoding="utf-8") as f:
+                    f.write("\n## AI Narrative\n\n")
+                    f.write(explanation + "\n")
+            else:
+                print(explanation)
+        except Exception as e:
+            print(json.dumps({"ai_explain_error": str(e)}))
+
+    # Optional SQLite export for Datasette
+    if getattr(args, "export_sqlite", None):
+        try:
+            export_compliance_results(args.export_sqlite, results, metadata={"source": "openwater check-compliance"})
+        except Exception as e:
+            print(json.dumps({"export_sqlite_error": str(e)}))
+
     if args.output:
         with open(args.output, "w", encoding="utf-8") as f:
             json.dump({k: (v.tolist() if hasattr(v, "tolist") else v) for k, v in results.items() if not k.endswith("_mask")}, f, indent=2)
@@ -105,7 +131,7 @@ def main() -> None:
     p_plume.add_argument("--output", required=True, help="Output .npy file path")
     p_plume.set_defaults(func=cmd_model_plume)
 
-    # check-compliance
+# check-compliance
     p_comp = subparsers.add_parser("check-compliance", help="Evaluate temperature raster against thresholds")
     p_comp.add_argument("temp", help="Temperature raster (Celsius by default)")
     p_comp.add_argument("--kelvin", action="store_true", help="Interpret input as Kelvin")
@@ -114,6 +140,9 @@ def main() -> None:
     p_comp.add_argument("--report-md", dest="report_md", default=None, help="Optional Markdown report output path")
     p_comp.add_argument("-o", "--output", default=None, help="Optional JSON output path")
     p_comp.add_argument("--config", default=None, help="Optional YAML config path")
+    p_comp.add_argument("--explain", action="store_true", help="Use AI to generate a narrative explanation of results (requires OpenAI API or 'llm' CLI)")
+    p_comp.add_argument("--explain-to", dest="explain_to", default=None, help="Optional path to save/append AI explanation. If --report-md is set and this is omitted, the explanation is appended to the report.")
+    p_comp.add_argument("--export-sqlite", dest="export_sqlite", default=None, help="Optional SQLite DB path to store results for exploration with Datasette.")
     p_comp.set_defaults(func=cmd_check_compliance)
 
     args = parser.parse_args()

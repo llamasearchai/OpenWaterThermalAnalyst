@@ -43,6 +43,20 @@ ml = [
 hydro = [
   "meshio>=5.3",
 ]
+ai = [
+  "openai>=1.12.0",
+  "tiktoken>=0.6",
+  "llm>=0.12",
+]
+viz = [
+  "datasette>=0.64",
+]
+dev = [
+  "pytest>=7.4",
+  "tox>=4.14",
+  "hatch>=1.9",
+  "build>=1.2.1",
+]
 
 [project.scripts]
 openwater = "open_water_thermal_analyst.cli:main"
@@ -53,4 +67,27 @@ package-dir = {"" = "src"}
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["open_water_thermal_analy*", "open_water_thermal_analyst*"]
+
+[tool.hatch.envs.dev]
+dependencies = [
+  "pytest>=7.4",
+  "tox>=4.14",
+  "datasette>=0.64",
+  "llm>=0.12",
+  "openai>=1.12.0",
+  "build>=1.2.1",
+]
+
+[tool.hatch.envs.dev.scripts]
+cli = "python -m open_water_thermal_analyst.cli -h"
+test_cli = "pytest -q tests/test_cli.py"
+build = "python -m build"
+
+[tool.hatch.envs.test]
+dependencies = [
+  "pytest>=7.4",
+]
+
+[tool.hatch.envs.test.scripts]
+unit = "pytest -q"
 
