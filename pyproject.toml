@@ -7,7 +7,7 @@ name = "openwater-thermal-analyst"
 version = "0.1.0"
 description = "Integrates thermal infrared remote sensing, hydrodynamic modeling, compliance monitoring, ML prediction, and alerting for water thermal plume analysis"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 authors = [{ name = "OpenWaterThermalAnalyst Authors" }]
 license = { text = "MIT" }
 keywords = ["thermal", "remote sensing", "hydrodynamics", "water quality", "compliance", "plume", "Landsat", "MODIS", "ECOSTRESS"]
@@ -45,6 +45,7 @@ hydro = [
 ]
 ai = [
   "openai>=1.12.0",
+  "openai-agents>=0.0.1",
   "tiktoken>=0.6",
   "llm>=0.12",
 ]
